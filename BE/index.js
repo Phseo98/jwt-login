@@ -6,7 +6,8 @@ const { login,
     accessToken,
     refreshToken,
     loginSuccess,
-    logout } = require('./controller')
+    logout,
+    mypage } = require('./controller');
 
 const app = express();
 dotenv.config();
@@ -27,6 +28,7 @@ app.get('/accesstoken', accessToken);
 app.get('/refreshtoken', refreshToken);
 app.get('/login/success', loginSuccess);
 app.post('/logout', logout);
+app.get('/mypage', mypage)
 
 app.listen(process.env.PORT, () => {
     console.log(`server is on ${process.env.PORT}`)

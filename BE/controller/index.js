@@ -3,8 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const login = (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body);
     const userInfo = userDatabase.filter(item => {
-        return item.email == email
+        return item.email == email && item.password == password
     })[0];
 
     if (!userInfo) {
@@ -42,6 +43,7 @@ const login = (req, res) => {
                 httpOnly: true  // js,http 어디서 접근 가능할지 지정  true: js로 접근불가
             })
 
+            // const { password, ...rest } = userInfo;
             res.status(200).json("login success");
 
         } catch (error) {
@@ -112,6 +114,7 @@ const loginSuccess = (req, res) => {
             res.status(403).json("Not Authorized")
         }
         else {
+            const { password, ...rest } = userData;
             res.status(200).json(userData);
         }
 
@@ -129,10 +132,25 @@ const logout = (req, res) => {
     }
 }
 
+const mypage = (req, res) => {
+    try {
+        const result = userDatabase.map(user => {
+            const { password, ...rest } = user;
+            return rest;
+        })
+        console.log(result);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(500).json(error);
+    }
+}
+
 module.exports = {
     login,
     accessToken,
     refreshToken,
     loginSuccess,
-    logout
+    logout,
+    mypage
 }
